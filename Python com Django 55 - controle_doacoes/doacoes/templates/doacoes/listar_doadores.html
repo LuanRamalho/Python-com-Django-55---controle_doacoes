@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Doações - Listar Doadores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .actions a {
+            text-decoration: none;
+            color: #3498db;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Doadores</h1>
+    
+    <!-- Barra de Busca -->
+    <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="searchDoadores()" placeholder="Buscar doador pelo nome...">
+    </div>
+
+    <table id="doadoresTable">
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Ações</th>
+        </tr>
+        {% for doador in doadores %}
+        <tr class="doador-row">
+            <td>{{ doador.nome }}</td>
+            <td>{{ doador.email }}</td>
+            <td>{{ doador.telefone }}</td>
+            <td class="actions">
+                <a href="{% url 'editar_doador' doador.id %}">Editar</a> |
+                <a href="{% url 'excluir_doador' doador.id %}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{% url 'cadastrar_doador' %}">Cadastrar Novo Doador</a>
+
+    <script>
+        // Função para buscar os doadores pelo nome
+        function searchDoadores() {
+            var input, filter, table, rows, cells, i, j, cell, match;
+            input = document.getElementById("searchInput");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("doadoresTable");
+            rows = table.getElementsByTagName("tr");
+
+            for (i = 1; i < rows.length; i++) {
+                cells = rows[i].getElementsByTagName("td");
+                match = false;
+
+                for (j = 0; j < cells.length; j++) {
+                    cell = cells[j];
+                    if (cell) {
+                        if (cell.innerText.toLowerCase().indexOf(filter) > -1) {
+                            match = true;
+                        }
+                    }
+                }
+
+                if (match) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Campanhas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .campanha-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .campanha-item {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .campanha-item:last-child {
+            border-bottom: none;
+        }
+        .campanha-item h3 {
+            color: #3498db;
+            margin: 0;
+            display: inline-block;
+        }
+        .actions {
+            float: right;
+        }
+        .actions a {
+            color: #3498db;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .campanha-item span {
+            display: block;
+            margin-top: 5px;
+        }
+        .divider {
+            margin: 20px 0;
+            border-top: 1px solid #ddd;
+        }
+        .link-cadastrar {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .link-cadastrar:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Campanhas</h1>
+
+    <!-- Barra de Busca -->
+    <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="searchCampanhas()" placeholder="Buscar campanha pelo nome...">
+    </div>
+
+    <a href="{% url 'cadastrar_campanha' %}" class="link-cadastrar">Cadastrar Nova Campanha</a>
+
+    <div class="campanha-container" id="campanhaContainer">
+        {% for campanha in campanhas %}
+            <div class="campanha-item">
+                <h3>Nome: {{ campanha.nome_campanha }}</h3>
+                <div class="actions">
+                    <a href="{% url 'editar_campanha' campanha.pk %}">Editar</a>
+                    <a href="{% url 'excluir_campanha' campanha.pk %}">Excluir</a>
+                </div>
+                <span><strong>Data Início:</strong> {{ campanha.data_inicio|date:"d/m/Y" }}</span>
+                <span><strong>Data Fim:</strong> {{ campanha.data_fim|date:"d/m/Y" }}</span>
+            </div>
+            <div class="divider"></div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Função para buscar as campanhas pelo nome
+        function searchCampanhas() {
+            var input, filter, container, items, item, h3, textContent, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toLowerCase();
+            container = document.getElementById("campanhaContainer");
+            items = container.getElementsByClassName("campanha-item");
+
+            for (i = 0; i < items.length; i++) {
+                item = items[i];
+                h3 = item.getElementsByTagName("h3")[0];
+                textContent = h3.textContent || h3.innerText;
+
+                if (textContent.toLowerCase().indexOf(filter) > -1) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

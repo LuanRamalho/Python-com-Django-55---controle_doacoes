@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Doações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 125px;
+            width: 80%;
+        }
+        .header-container a {
+            text-decoration: none;
+            color: #3498db;
+            background-color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .search-container {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .doacao-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        .doacao-info {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .doacao-info span {
+            font-weight: bold;
+            color: #2c3e50; /* Azul escuro */
+        }
+        .doacao-info div {
+            flex: 1;
+        }
+        .actions {
+            display: flex;
+        }
+        .actions a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .actions a.edit {
+            background-color: #2ecc71; /* Verde */
+            color: white;
+            margin-left: 500px;
+        }
+        .actions a.delete {
+            background-color: #e74c3c; /* Vermelho */
+            color: white;
+        }
+        .actions a:hover {
+            opacity: 0.8;
+        }
+        hr {
+            border: 1px solid #ddd;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Doações</h1>
+
+    <!-- Barra de busca -->
+    <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="searchDoacoes()" placeholder="Buscar doação pelo nome do doador...">
+    </div>
+
+    <div class="header-container">
+        <a href="{% url 'cadastrar_doacao' %}">Cadastrar Nova Doação</a>
+    </div>
+
+    <div id="doacaoContainer">
+        {% for doacao in doacoes %}
+            <div class="doacao-container">
+                <div class="doacao-info">
+                    <div>
+                        <span>Doador:</span> <span class="doador-nome">{{ doacao.doador.nome }}</span>
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'editar_doacao' doacao.pk %}" class="edit">Editar</a>
+                        <a href="{% url 'excluir_doacao' doacao.pk %}" class="delete">Excluir</a>
+                    </div>
+                </div>
+                <div class="doacao-info">
+                    <span>Item:</span>  {{ doacao.item.nome_item }}
+                </div>
+                <div class="doacao-info">
+                    <span>Campanha:</span>  {{ doacao.campanha.nome_campanha }}
+                </div>
+                <div class="doacao-info">
+                    <span>Data de Doação:</span>  {{ doacao.data_doacao|date:"d/m/Y" }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Função para buscar as doações pelo nome do doador
+        function searchDoacoes() {
+            var input, filter, container, items, item, doadorNome, textContent, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toLowerCase();
+            container = document.getElementById("doacaoContainer");
+            items = container.getElementsByClassName("doacao-container");
+
+            for (i = 0; i < items.length; i++) {
+                item = items[i];
+                doadorNome = item.getElementsByClassName("doador-nome")[0];
+                textContent = doadorNome.textContent || doadorNome.innerText;
+
+                if (textContent.toLowerCase().indexOf(filter) > -1) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

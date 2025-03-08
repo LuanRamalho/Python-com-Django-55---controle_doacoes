@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Itens Doados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .item {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .item h2 {
+            margin: 0;
+            color: #3498db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .acoes a {
+            margin-left: 10px;
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .acoes a:hover {
+            text-decoration: underline;
+        }
+        .descricao {
+            margin-top: 5px;
+        }
+        a.novo-item {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        a.novo-item:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Itens Doados</h1>
+    
+    <!-- Barra de Busca -->
+    <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="searchItens()" placeholder="Buscar item pelo nome...">
+    </div>
+
+    <a href="{% url 'cadastrar_item' %}" class="novo-item">Cadastrar Novo Item</a>
+    <div class="container">
+        {% for item in itens %}
+        <div class="item">
+            <h2>
+                Nome do Item: {{ item.nome_item }}
+                <span class="acoes">
+                    <a href="{% url 'editar_item' item.pk %}">Editar</a> |
+                    <a href="{% url 'excluir_item' item.pk %}">Excluir</a>
+                </span>
+            </h2>
+            <p><strong>Quantidade:</strong> {{ item.quantidade }}</p>
+            <p class="descricao"><strong>Descrição:</strong> {{ item.descricao|linebreaks }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Função para buscar os itens pelo nome
+        function searchItens() {
+            var input, filter, container, items, item, h2, textContent, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toLowerCase();
+            container = document.querySelector(".container");
+            items = container.getElementsByClassName("item");
+
+            for (i = 0; i < items.length; i++) {
+                item = items[i];
+                h2 = item.getElementsByTagName("h2")[0];
+                textContent = h2.textContent || h2.innerText;
+
+                if (textContent.toLowerCase().indexOf(filter) > -1) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

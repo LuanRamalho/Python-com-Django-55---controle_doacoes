@@ -1,0 +1,22 @@
+Criar um novo projeto Django
+django-admin startproject controle_doacoes
+
+Criar um novo aplicativo Django
+cd controle_doacoes
+python manage.py startapp doacoes
+
+Criar e aplicar as migrações do banco de dados
+python manage.py makemigrations
+python manage.py migrate
+
+Criar um superusuário para acessar o admin
+python manage.py createsuperuser
+
+Executar o servidor de desenvolvimento
+python manage.py runserver
+
+Ao conectar o servidor, acesse:
+http:127.0.0.1:8000/doadores
+http://127.0.0.1:8000/itens
+http://127.0.0.1:8000/campanhas
+http://127.0.0.1:8000/doacoes
