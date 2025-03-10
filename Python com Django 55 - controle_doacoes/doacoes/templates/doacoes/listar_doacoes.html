@@ -23,10 +23,16 @@
         }
         .header-container a {
             text-decoration: none;
-            color: #3498db;
-            background-color: #fff;
+            color: white;
             padding: 5px 10px;
             border-radius: 5px;
+        }
+        .header-container a.cadastrar {
+            background-color: #3498db; /* Azul */
+        }
+        .header-container a.gerar-relatorio {
+            background-color: #2ecc71; /* Verde */
+            margin-right: 750px;
         }
         .search-container {
             text-align: center;
@@ -93,7 +99,8 @@
     </div>
 
     <div class="header-container">
-        <a href="{% url 'cadastrar_doacao' %}">Cadastrar Nova Doação</a>
+        <a href="{% url 'cadastrar_doacao' %}" class="cadastrar">Cadastrar Nova Doação</a>
+        <a href="{% url 'gerar_relatorio' %}" class="gerar-relatorio">Gerar Relatório</a>
     </div>
 
     <div id="doacaoContainer">
