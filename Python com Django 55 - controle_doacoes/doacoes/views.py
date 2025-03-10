@@ -153,7 +153,8 @@ def gerar_relatorio(request):
     doacoes = Doacao.objects.all()
     y_position = 730
     for doacao in doacoes:
-        c.drawString(100, y_position, f'Doador: {doacao.doador.nome} | Item: {doacao.item.nome_item} | Data: {doacao.data_doacao}')
+        data_formatada = doacao.data_doacao.strftime('%d/%m/%Y')
+        c.drawString(100, y_position, f'Doador: {doacao.doador.nome} | Item: {doacao.item.nome_item} | Data: {data_formatada}')
         y_position -= 20
 
     c.showPage()
